@@ -1,42 +1,44 @@
-# Selenium cucumber automation framework
+# Automation Tests - Practice Software Testing
 
-## Intro
-_____________________
+## Description
 
-This is a POC that showcases how Cucumber, Selenium, Junit and Extent reports work together.
+This project contains automated tests for [Practice Software Testing](https://practicesoftwaretesting.com/). The tests are written using **Java**, **Selenium WebDriver**, **Cucumber**, and **JUnit**.  
 
-## Stack
-_____________________
-1. Java
-2. Selenium
-3. Cucumber
-4. JUnit
-5. Extent Reports
-6. Grasshopper adapter
+The scenarios covered include:
+- Registering a new account
+- Adding products to the shopping cart
+- Applying product filters and sorting
+- Completing checkout with **Cash on Delivery** payment
 
-## Running the project
+> ⚠️ The tests are intentionally run slowly to allow visual tracking of actions on the website. This helps understand the flow and visually verify elements.
 
-### From IDE
+---
 
-Simplest way is just go to a feature and on the left click on the play button and it just works
+## Project Structure
 
-### Running from commandline
-1. Navigate to the project folder with terminal or powershell
-2. Use command "./gradlew clean test" to run all tests
-3. Use command "./gradlew clean smoke" to run tests tagged with @Smoke
-4. Use command "./gradlew clean regression" to run tests tagged with @Regression
-5. Tasks can be written for any tag see gradle.build file for instructions
+- `pages/` - Page Object classes for each page: `MainPage`, `RegistrationPage`, `LoginPage`, `AccountPage`
+- `stepDefinitions/` - Cucumber step definition classes for test scenarios
+- `utils/` - Utility classes for dynamic data generation (`DataGeneration`) and WebDriver setup (`Hooks`)
+- `features/` - `.feature` files with scenarios written in Gherkin
+- `pom.xml` - Maven file containing all project dependencies
 
-After each run a HTML report and a XML report is generate in the project file
-under the "reports" folder. Open with any browser to see it.
+---
 
-### Recommended plugins for intellij
+## Example Scenario Covered
 
-1. Gherkin -> adds support for cucumber
-2. Test Automation -> offers support for selenium and an integrated web inspector
-3. SonarQube for IDE -> linter for detecting dangerous code or potential bugs
-4. Cucumber for java -> makes easier to connect steps to glue code
+1. Navigate to the main page
+2. Register a new account with automatically generated data
+3. Add 6 different products to the cart
+4. Apply filters and sorting (CO₂ rating, price slider)
+5. Complete the order using cash on delivery
+6. Verify the username after login
 
-Enjoy!
+> The test method `MainPage.test()` combines all these steps into a single flow.
 
-Andrei Soare
+---
+
+## How to Run the Tests
+
+1. Clone the repository:  
+   ```bash
+   git clone <repo-url>
