@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+}
+//This is the oveit company domain reversed as per java requirements
+group = 'com.oveit'
+//build version
+version = '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+//Because of packages like the cucumber dependencies that need to have the version in sync
+//A central version system was necessary
+ext {
+    jUnitVersion = '6.0.1'
+    cucumberVersion = '7.32.0'
+    seleniumVersion = '4.38.0'
+    cucumberAdapterVersion = '1.14.0'
+    extentReportsVersion = '5.1.2'
+    fakerVersion = '1.0.2'
+}
+
+dependencies {
+    //Junit Jupiter (Aggregator) dependency for providing the test engine and assertions
+    //https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter
+    testImplementation "org.junit.jupiter:junit-jupiter:$jUnitVersion"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    //Cucumber dependencies for interacting with jUnit
+    //Cucumber JVM: java
+    //https://mvnrepository.com/artifact/io.cucumber/cucumber-java
+    testImplementation "io.cucumber:cucumber-java:$cucumberVersion"
+    //Cucumber JVM: JUnit 5 JUnit Platform Engine
+    //https://mvnrepository.com/artifact/io.cucumber/cucumber-junit-platform-engine
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:$cucumberVersion"
+    //Cucumber JVM: Core
+    //https://mvnrepository.com/artifact/io.cucumber/cucumber-core
+    testImplementation "io.cucumber:cucumber-core:$cucumberVersion"
+
+    //Selenium for interacting with browsers
+    //https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    testImplementation "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+
+    //Extent reports for generating reports
+    //https://mvnrepository.com/artifact/com.aventstack/extentreports
+    testImplementation "com.aventstack:extentreports:$extentReportsVersion"
+
+    //Extent reports adapter to facilitate the communication between cucumber and extent reports
+    //ExtentReports Cucumber7 Adapter
+    //https://mvnrepository.com/artifact/tech.grasshopper/extentreports-cucumber7-adapter
+    testImplementation "tech.grasshopper:extentreports-cucumber7-adapter:$cucumberAdapterVersion"
+
+    //Java faker for generating test data
+    //https://mvnrepository.com/artifact/com.github.javafaker/javafaker
+    testImplementation ("com.github.javafaker:javafaker:$fakerVersion") {
+        //This framework has declared a transitive dependency that does not longer exist and it is not used either so we need to exclude it
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+}
+
+//Task for running all tests or for running with a custom tag name
+test {
+    useJUnitPlatform()
+    systemProperty 'cucumber.filter.tags', System.getProperty('cucumber.filter.tags', '')
+}
+
+//These tasks can be renamed and used to run any tag
+//And as many tasks as you want/need can be added for extra flexibility
+//Task for running tests tagged with @Smoke
+tasks.register("smoke", Test){
+    useJUnitPlatform()
+    //Change the <@Tag> name here and it will run your tag
+    systemProperty "cucumber.filter.tags", "@Smoke"
+    //This description is optional
+    description = "Run tests tagged with @Smoke"
+}
+//Task for running tests tagged with @Regression
+tasks.register("regression", Test){
+    useJUnitPlatform()
+    //Change the <@Tag> name here and it will run your tag
+    systemProperty "cucumber.filter.tags", "@Regression"
+    //This description is optional
+    description = "Run tests tagged with @Regression"
+}
+
